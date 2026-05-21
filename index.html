@@ -35,6 +35,7 @@
             flex: 1;
             position: relative;
             display: none;
+            overflow-y: auto;
         }
 
         .active {
@@ -45,7 +46,7 @@
         /* HOME SCREEN LAYOUT */
         #home-screen {
             background: linear-gradient(180deg, #1f4068 0%, #162447 100%);
-            padding: 30px;
+            padding: 30px 20px;
         }
 
         .app-grid {
@@ -83,6 +84,8 @@
             margin-top: 8px;
             text-align: center;
             text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+            word-wrap: break-word;
+            width: 70px;
         }
 
         /* MEMOJI APP LAYOUT */
@@ -91,6 +94,23 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+        }
+
+        #gallery-screen {
+            background-color: #1a1a1a;
+            padding: 20px;
+            align-items: center;
+        }
+
+        #settings-screen {
+            background-color: #1a1a1a;
+            padding: 20px;
+        }
+
+        #photos-screen {
+            background-color: #0a0a0a;
+            padding: 20px;
+            grid-template-columns: repeat(3, 1fr);
         }
 
         .app-header {
@@ -233,6 +253,7 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            border-top: 1px solid #333;
         }
 
         .home-swipe-line {
@@ -241,6 +262,76 @@
             background-color: #ffffff;
             border-radius: 10px;
             opacity: 0.8;
+        }
+
+        .gallery-content {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .gallery-item {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 48px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .gallery-item:active {
+            transform: scale(0.95);
+        }
+
+        .gallery-label {
+            color: #aaa;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .settings-list {
+            max-width: 400px;
+        }
+
+        .settings-item {
+            background: #2a2a2a;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toggle {
+            width: 50px;
+            height: 30px;
+            background: #34c759;
+            border-radius: 15px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .toggle.off {
+            background: #555;
+        }
+
+        .toggle-dot {
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 13px;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: left 0.2s;
+        }
+
+        .toggle.off .toggle-dot {
+            left: 22px;
         }
     </style>
 </head>
@@ -258,6 +349,18 @@
             <div class="app-icon" onclick="openScreen('memoji-screen')">
                 <div class="icon-shape">🦊</div>
                 <div class="app-label">Memoji Cam</div>
+            </div>
+            <div class="app-icon" onclick="openScreen('gallery-screen')">
+                <div class="icon-shape">🎨</div>
+                <div class="app-label">Gallery</div>
+            </div>
+            <div class="app-icon" onclick="openScreen('photos-screen')">
+                <div class="icon-shape">📸</div>
+                <div class="app-label">Photos</div>
+            </div>
+            <div class="app-icon" onclick="openScreen('settings-screen')">
+                <div class="icon-shape">⚙️</div>
+                <div class="app-label">Settings</div>
             </div>
         </div>
     </div>
@@ -286,6 +389,55 @@
         <p class="hint-text">Tap the camera circle to swap masks! <br><br><b>Tap the bottom white bar to go home.</b></p>
     </div>
 
+    <!-- GALLERY SCREEN -->
+    <div id="gallery-screen" class="screen">
+        <div class="app-header">Gallery</div>
+        <div class="gallery-content">
+            <div class="gallery-item">🌟<div class="gallery-label">Favorites</div></div>
+            <div class="gallery-item">🎬<div class="gallery-label">Videos</div></div>
+            <div class="gallery-item">😊<div class="gallery-label">Selfies</div></div>
+            <div class="gallery-item">🎥<div class="gallery-label">Recents</div></div>
+        </div>
+    </div>
+
+    <!-- PHOTOS SCREEN -->
+    <div id="photos-screen" class="screen">
+        <div class="app-header">Photos</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%;">
+            <div style="background: #ff9500; height: 100px; border-radius: 8px;"></div>
+            <div style="background: #5ac8fa; height: 100px; border-radius: 8px;"></div>
+            <div style="background: #4cd964; height: 100px; border-radius: 8px;"></div>
+            <div style="background: #ff3b30; height: 100px; border-radius: 8px;"></div>
+            <div style="background: #af52de; height: 100px; border-radius: 8px;"></div>
+            <div style="background: #a2845d; height: 100px; border-radius: 8px;"></div>
+        </div>
+    </div>
+
+    <!-- SETTINGS SCREEN -->
+    <div id="settings-screen" class="screen">
+        <div class="app-header">Settings</div>
+        <div class="settings-list">
+            <div class="settings-item">
+                <span>Sound Effects</span>
+                <div class="toggle">
+                    <div class="toggle-dot"></div>
+                </div>
+            </div>
+            <div class="settings-item">
+                <span>Notifications</span>
+                <div class="toggle off">
+                    <div class="toggle-dot"></div>
+                </div>
+            </div>
+            <div class="settings-item">
+                <span>Dark Mode</span>
+                <div class="toggle">
+                    <div class="toggle-dot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bottom Navigation Bar (Tap it to go Home!) -->
     <div class="nav-bar-area" onclick="goHome()">
         <div class="home-swipe-line"></div>
@@ -293,14 +445,15 @@
 
     <script>
         // Fun mask emojis to toggle through
-        const faces = ["🦊", "🤖", "😎", "😜", "🤯", "🤡", "👽", "🦁"];
+        const faces = ["🦊", "🤖", "😎", "😜", "🤯", "🤡", "👽", "🦁", "🐱", "🐸", "🎭", "💀"];
         let currentFaceIndex = 0;
         let videoStream = null;
         let mediaRecorder = null;
         let recordedChunks = [];
         let recordingStartTime = null;
         let timerInterval = null;
-        let canvasStream = null;
+        let canvas = null;
+        let ctx = null;
 
         async function startCamera() {
             const video = document.getElementById('webcam');
@@ -346,65 +499,75 @@
         }
 
         function startRecording() {
-            recordedChunks = [];
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            const video = document.getElementById('webcam');
-            const memojiFace = document.getElementById('memoji-face');
-            
-            canvas.width = 480;
-            canvas.height = 640;
+            try {
+                recordedChunks = [];
+                const video = document.getElementById('webcam');
+                const memojiFace = document.getElementById('memoji-face');
+                
+                canvas = document.createElement('canvas');
+                ctx = canvas.getContext('2d');
+                canvas.width = 480;
+                canvas.height = 640;
 
-            // Create canvas stream with video + emoji overlay
-            canvasStream = canvas.captureStream(30);
-            
-            // Add audio if available
-            if (videoStream) {
-                const audioTracks = videoStream.getAudioTracks();
-                audioTracks.forEach(track => canvasStream.addTrack(track));
+                const canvasStream = canvas.captureStream(30);
+                
+                // Add audio if available
+                if (videoStream) {
+                    const audioTracks = videoStream.getAudioTracks();
+                    audioTracks.forEach(track => canvasStream.addTrack(track));
+                }
+
+                mediaRecorder = new MediaRecorder(canvasStream, {
+                    mimeType: 'video/webm;codecs=vp8,opus'
+                });
+
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+
+                mediaRecorder.onstop = () => {
+                    document.getElementById('recordBtn').style.display = 'flex';
+                    document.getElementById('stopBtn').style.display = 'none';
+                    document.getElementById('downloadBtn').style.display = 'flex';
+                    document.getElementById('recording-indicator').classList.remove('active');
+                };
+
+                mediaRecorder.start();
+                recordingStartTime = Date.now();
+
+                // Draw loop
+                const drawFrame = () => {
+                    if (mediaRecorder && mediaRecorder.state === 'recording') {
+                        ctx.save();
+                        ctx.scale(-1, 1);
+                        ctx.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
+                        ctx.restore();
+
+                        // Draw emoji overlay
+                        ctx.font = 'bold 160px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillStyle = 'white';
+                        ctx.fillText(memojiFace.innerText, canvas.width / 2, canvas.height / 2);
+
+                        requestAnimationFrame(drawFrame);
+                    }
+                };
+                drawFrame();
+
+                // Update UI
+                document.getElementById('recordBtn').style.display = 'none';
+                document.getElementById('stopBtn').style.display = 'flex';
+                document.getElementById('downloadBtn').style.display = 'none';
+                document.getElementById('recording-indicator').classList.add('active');
+
+                // Timer
+                timerInterval = setInterval(updateTimer, 100);
+            } catch (err) {
+                alert("Recording error: " + err.message);
             }
-
-            mediaRecorder = new MediaRecorder(canvasStream, {
-                mimeType: 'video/webm;codecs=vp8,opus'
-            });
-
-            mediaRecorder.ondataavailable = (event) => {
-                if (event.data.size > 0) {
-                    recordedChunks.push(event.data);
-                }
-            };
-
-            mediaRecorder.start();
-            recordingStartTime = Date.now();
-
-            // Draw loop
-            const drawFrame = () => {
-                if (mediaRecorder && mediaRecorder.state === 'recording') {
-                    ctx.save();
-                    ctx.scale(-1, 1);
-                    ctx.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
-                    ctx.restore();
-
-                    // Draw emoji overlay
-                    ctx.font = 'bold 160px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillStyle = 'white';
-                    ctx.fillText(memojiFace.innerText, canvas.width / 2, canvas.height / 2);
-
-                    requestAnimationFrame(drawFrame);
-                }
-            };
-            drawFrame();
-
-            // Update UI
-            document.getElementById('recordBtn').style.display = 'none';
-            document.getElementById('stopBtn').style.display = 'flex';
-            document.getElementById('downloadBtn').style.display = 'none';
-            document.getElementById('recording-indicator').classList.add('active');
-
-            // Timer
-            timerInterval = setInterval(updateTimer, 100);
         }
 
         function updateTimer() {
@@ -419,17 +582,15 @@
             if (mediaRecorder && mediaRecorder.state === 'recording') {
                 mediaRecorder.stop();
                 clearInterval(timerInterval);
-
-                mediaRecorder.onstop = () => {
-                    document.getElementById('recordBtn').style.display = 'flex';
-                    document.getElementById('stopBtn').style.display = 'none';
-                    document.getElementById('downloadBtn').style.display = 'flex';
-                    document.getElementById('recording-indicator').classList.remove('active');
-                };
             }
         }
 
         function downloadRecording() {
+            if (recordedChunks.length === 0) {
+                alert("No recording to download!");
+                return;
+            }
+
             const blob = new Blob(recordedChunks, { type: 'video/webm' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -445,6 +606,16 @@
             document.getElementById('recordBtn').style.display = 'flex';
             document.getElementById('downloadBtn').style.display = 'none';
         }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add toggle functionality
+            document.querySelectorAll('.toggle').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    this.classList.toggle('off');
+                });
+            });
+        });
     </script>
 
 </body>
